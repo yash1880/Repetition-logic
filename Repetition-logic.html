@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Café Billing System</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background: rgb(255, 255, 255); 
+            padding: 20px;
+        }
+
+        .container{
+            width: 600px;
+            margin: auto;  
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        h1{
+            text-align: center;
+            color: #2d2b2b;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td{
+            padding: 10px;
+            border: 1px solid #000000;
+            text-align: center;
+        }
+
+        button{
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover{
+            background: #45a049;
+        }
+
+        .output{
+            margin-top: 30px;
+            padding: 20px;
+            background: #e6c87c;
+            border: 1px solid #e6c87c;
+            border-radius: 10px;
+        }
+
+        h2{
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Smart Cafe Billing System</h1>
+
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Price (₹)</th>
+                <th>Quantity</th>
+            </tr>
+            <tr>
+                <td bgcolor="lightblue">Coffee</td>
+                <td>150</td>
+                <td><input type="number" id="coffeeQty" value="0" min="0"></td>
+            </tr>
+            <tr>
+                <td bgcolor="lightblue">Burger</td>
+                <td>200</td>
+                <td><input type="number" id="burgerQty" value="0" min="0"></td>
+            </tr>
+            <tr>
+                <td bgcolor="lightblue">Pizza</td>
+                <td>410</td>
+                <td><input type="number" id="pizzaQty" value="0" min="0"></td>
+            </tr>
+        </table>
+
+        <button onclick="generateBill()">Generate Bill</button>
+
+        <div id="output" class="output"></div>
+    </div>
+
+
+
+<script>
+function generateBill() {
+
+
+    let coffeeQty = parseInt(document.getElementById("coffeeQty").value);
+    let burgerQty = parseInt(document.getElementById("burgerQty").value);
+    let pizzaQty = parseInt(document.getElementById("pizzaQty").value);
+
+    let menu = [
+        { name: "Coffee", qty: coffeeQty, price: 150 },
+        { name: "Burger", qty: burgerQty, price: 200 },
+        { name: "Pizza", qty: pizzaQty, price: 410 }
+    ];
+
+    let subtotal = 0;
+    let outputHTML = `<h2>Bill Details:</h2>`;
+
+    menu.forEach(item => {
+
+        let originalBill = item.qty * item.price;
+        let discount = originalBill * 0.10;
+        let finalBill = originalBill - discount;
+
+        subtotal += finalBill;
+
+        outputHTML += `
+            <b>${item.name}</b><br>
+            Quantity: ${item.qty}<br>
+            Price per Item: ₹${item.price}<br>
+            Original Bill: ₹${originalBill}<br>
+            Discount (10%): ₹${discount}<br>
+            Final Bill: ₹${finalBill.toFixed(2)}<br><br>
+        `;
+    });
+
+    let gst = subtotal * 0.05;
+    let grandTotal = subtotal + gst;
+
+    outputHTML += `
+        <hr>
+        <b>Subtotal:</b> ₹${subtotal.toFixed(2)}<br>
+        <b>GST (5%):</b> ₹${gst.toFixed(2)}<br>
+        <b>Grand Total:</b> ₹${grandTotal.toFixed(2)}
+    `;
+
+    document.getElementById("output").innerHTML = outputHTML;
+}
+</script>
+
+</body>
+</html>
